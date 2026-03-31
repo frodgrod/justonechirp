@@ -55,9 +55,17 @@
       font-size: 1.05rem;
     }
 
+    .intro p {
+      margin: 0 0 0.75em;
+    }
+
+    .intro p:last-child {
+      margin-bottom: 0;
+    }
+
     .score-guide {
       padding: 18px 20px;
-      margin-bottom: 20px;
+      margin-top: 20px;
       font-family: "Trebuchet MS", Arial, sans-serif;
     }
 
@@ -232,7 +240,12 @@
 <body>
   <main class="page">
     <div class="intro">
-      Woodstock has had such fun at ACPT, but his little wings are tired from carrying around a pencil all day. He's decided to sit down in the Marriott lobby and play a game of Scrabble with his cruciverbal friends. However, Woodstock doesn't talk, he chirps! He brought his own set of tiles that use his signature chirp-speak. Each tile is marked with a letter score, and luckily, birds use the same Scrabble scoring system that we do. Bonus scoring rules are not in play. What word did Woodstock play in the center of the board? It's also the word you'll need for 17A of Just One Clue.
+      <p>Woodstock has had such fun at ACPT, but his little wings are tired from carrying around a pencil all day. He's decided to sit down in the Marriott lobby and play a game of Scrabble with his cruciverbal friends. However, Woodstock doesn't talk, he chirps! He brought his own set of tiles that use his signature chirp-speak.</p>
+      <p>Each tile is marked with a letter score, and luckily, birds use the same Scrabble scoring system that we do. Bonus scoring rules are not in play. What word did Woodstock play in the center of the board? It's also the word you'll need for 17A of Just One Clue.</p>
+    </div>
+
+    <div class="wrap">
+      <div class="board" id="board" aria-label="15 by 15 Scrabble-style board"></div>
     </div>
 
     <section class="score-guide" aria-label="Scrabble Letter Point Values">
@@ -288,10 +301,6 @@
         </div>
       </div>
     </section>
-
-    <div class="wrap">
-      <div class="board" id="board" aria-label="15 by 15 Scrabble-style board"></div>
-    </div>
   </main>
 
   <script>
