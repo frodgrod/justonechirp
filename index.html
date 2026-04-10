@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Just One Chirp</title>
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&family=Patrick+Hand+SC&display=swap");
+
     :root {
       --bg: #e9dfc5;
       --ink: #1f1f1f;
@@ -34,7 +36,12 @@
       margin: 0;
       min-height: 100vh;
       background-color: var(--bg);
-      font-family: "Trebuchet MS", Arial, sans-serif;
+      background-image:
+        linear-gradient(rgba(233,223,197,0.62), rgba(233,223,197,0.62)),
+        url("Paper-Texture-1.jpg");
+      background-repeat: repeat;
+      background-size: 520px auto;
+      font-family: "Comic Neue", "Trebuchet MS", Arial, sans-serif;
       padding: clamp(12px, 2.8vw, 28px);
       color: var(--ink);
     }
@@ -45,7 +52,6 @@
       margin: 0 auto;
       padding: 14px;
       background: #efe7c7;
-      border: 4px solid var(--ink);
       border-radius: 10px;
     }
 
@@ -57,6 +63,24 @@
       border-radius: 14px;
       box-shadow: none;
       transform-origin: center;
+    }
+
+    .opening-image {
+      border: 4px solid var(--ink);
+      border-radius: 4px;
+      background-color: #e89299;
+      background-image: url("finalpaperbanner.png");
+      background-repeat: no-repeat;
+      background-position: right center;
+      background-size: cover;
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .opening-image svg {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     .intro {
@@ -81,16 +105,17 @@
     .score-guide {
       padding: 18px 20px;
       margin-top: 20px;
-      background: var(--panel-mint);
+      background: var(--dl);
       border-radius: 12px 16px 13px 15px;
       transform: rotate(0.18deg);
     }
 
     .score-layout {
       display: grid;
-      grid-template-columns: minmax(240px, 320px) minmax(360px, 1fr);
-      gap: 22px;
+      grid-template-columns: 1fr;
+      gap: clamp(10px, 2vw, 20px);
       align-items: start;
+      justify-content: start;
     }
 
     .section-label {
@@ -99,11 +124,11 @@
       border: 3px solid var(--ink);
       border-radius: 999px;
       background: #f5f0dc;
-      font-family: "Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
-      font-size: 0.86rem;
+      font-family: "Patrick Hand SC", "Comic Neue", "Trebuchet MS", Arial, sans-serif;
+      font-size: 1.05rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.08em;
       margin-bottom: 10px;
     }
 
@@ -121,18 +146,39 @@
     }
 
     .woodstock-box {
-      background: var(--panel-gray);
-      border: 3px solid var(--ink);
-      border-radius: 12px;
-      padding: 10px;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      order: 2;
+      justify-self: start;
+      width: min(100%, 440px);
+      max-width: 440px;
+      display: grid;
+      grid-template-columns: clamp(84px, 16vw, 140px) minmax(0, 1fr);
+      align-items: flex-start;
+      gap: 10px;
     }
 
     .woodstock-box img {
       display: block;
       width: 100%;
       height: auto;
-      border-radius: 8px;
-      border: 2px solid var(--ink);
+      border-radius: 0;
+      flex: 0 0 auto;
+    }
+
+    .woodstock-blurb {
+      margin: 0;
+      max-width: 100%;
+      font-size: clamp(0.62rem, 1.05vw, 0.88rem);
+      line-height: 1.25;
+    }
+
+    .score-table {
+      order: 1;
+      width: 100%;
+      max-width: clamp(320px, 56vw, 440px);
     }
 
     .caption {
@@ -146,21 +192,22 @@
       margin: 0 0 12px;
       font-size: 1.2rem;
       line-height: 1.2;
-      font-family: "Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
+      font-family: "Patrick Hand SC", "Comic Neue", "Trebuchet MS", Arial, sans-serif;
+      letter-spacing: 0.03em;
     }
 
     table {
       width: 100%;
-      min-width: 360px;
+      min-width: 0;
       border-collapse: collapse;
-      font-size: 0.98rem;
+      font-size: 0.92rem;
       background: #fbf6e2;
     }
 
     th,
     td {
       border: 2px solid var(--ink);
-      padding: 10px 12px;
+      padding: 7px 10px;
       text-align: left;
       vertical-align: top;
     }
@@ -181,9 +228,9 @@
 
     .wrap {
       padding: 18px;
-      width: fit-content;
+      width: 100%;
       margin: 0 auto;
-      background: var(--panel-pink);
+      background: var(--dw);
       border-radius: 15px 12px 14px 13px;
       transform: rotate(-0.12deg);
     }
@@ -197,28 +244,17 @@
 
     .table-wrap {
       width: 100%;
+      max-width: 440px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
 
-    .comic-rule {
-      height: 5px;
-      width: min(280px, 56vw);
-      margin: 6px 0 14px 4px;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent 0 8px,
-        rgba(31,31,31,0.9) 8px 16px
-      );
-      border-radius: 999px;
-      opacity: 0.5;
-      transform: rotate(-0.6deg);
-    }
-
     .board {
       display: grid;
-      grid-template-columns: repeat(15, 40px);
-      grid-template-rows: repeat(15, 40px);
+      grid-template-columns: repeat(15, minmax(0, 1fr));
+      grid-template-rows: repeat(15, minmax(0, 1fr));
+      width: 100%;
+      aspect-ratio: 1 / 1;
       gap: 2px;
       background: var(--grid);
       padding: 2px;
@@ -227,8 +263,8 @@
     }
 
     .cell {
-      width: 40px;
-      height: 40px;
+      width: 100%;
+      height: 100%;
       background: var(--cell);
       position: relative;
     }
@@ -240,7 +276,7 @@
 
     .tile {
       position: absolute;
-      inset: 2px;
+      inset: 1px;
       background: var(--tile);
       border: 2px solid var(--tile-edge);
       border-radius: 6px;
@@ -248,8 +284,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
-      font-weight: 800;
+      font-size: clamp(0.95rem, 2.9vw, 2.3rem);
+      font-weight: 900;
+      line-height: 1;
       color: var(--ink);
       text-transform: uppercase;
       font-family: "Courier New", Courier, monospace;
@@ -267,7 +304,7 @@
 
     .chirp-stroke {
       stroke: #1f1f1f;
-      stroke-width: 2.2;
+      stroke-width: 3.2;
       stroke-linecap: round;
       fill: none;
     }
@@ -277,27 +314,28 @@
         padding: 18px;
       }
 
-      .score-layout {
-        grid-template-columns: minmax(250px, 310px) minmax(420px, 1fr);
-        gap: 26px;
-      }
-
       .intro {
         font-size: 1.12rem;
       }
     }
 
     @media (max-width: 900px) {
-      .score-layout {
-        grid-template-columns: 1fr;
+      .woodstock-box {
+        order: 2;
+        width: min(100%, 440px);
+        justify-self: start;
       }
 
-      .woodstock-box {
-        max-width: 360px;
+      .score-table {
+        max-width: 100%;
       }
     }
 
     @media (max-width: 760px) {
+      .opening-image {
+        margin-bottom: 14px;
+      }
+
       .intro,
       .score-guide {
         font-size: 0.98rem;
@@ -306,11 +344,6 @@
 
       .intro {
         max-width: 100%;
-      }
-
-      .comic-rule {
-        width: min(210px, 60vw);
-        margin-bottom: 10px;
       }
 
       .score-guide h2 {
@@ -322,27 +355,22 @@
         border-width: 3px;
       }
 
-      table {
-        font-size: 0.9rem;
-      }
-
       th,
       td {
-        padding: 8px 9px;
+        padding: 6px 8px;
       }
 
       .board {
-        grid-template-columns: repeat(15, 22px);
-        grid-template-rows: repeat(15, 22px);
+        gap: 1px;
+        padding: 1px;
       }
 
       .cell {
-        width: 22px;
-        height: 22px;
+        width: 100%;
+        height: 100%;
       }
 
       .tile {
-        font-size: 0.72rem;
         inset: 1px;
         border-radius: 4px;
       }
@@ -370,11 +398,12 @@
       }
 
       .woodstock-box {
-        max-width: 320px;
+        max-width: 440px;
+        align-items: flex-start;
       }
 
       .chirp-stroke {
-        stroke-width: 1.7;
+        stroke-width: 2.3;
       }
     }
 
@@ -390,22 +419,32 @@
       }
 
       table {
-        min-width: 330px;
+        min-width: 290px;
+        font-size: 0.84rem;
       }
     }
   </style>
 </head>
 <body>
   <main class="page">
+    <div class="opening-image" aria-label="Comic style opening banner">
+      <svg viewBox="0 0 1200 430" role="img" aria-label="Classic comic style puzzle banner">
+        <rect x="0" y="0" width="1200" height="430" fill="transparent" />
+
+        <text x="96" y="112" font-family="Patrick Hand SC, Comic Neue, Trebuchet MS, Arial, sans-serif" font-size="108" fill="#973a45" font-weight="700" letter-spacing="1.2">JUST ONE CHIRP</text>
+
+        <text x="96" y="168" font-family="Patrick Hand SC, Comic Neue, Trebuchet MS, Arial, sans-serif" font-size="40" fill="#1f1f1f">featuring</text>
+        <text x="96" y="260" font-family="Patrick Hand SC, Comic Neue, Trebuchet MS, Arial, sans-serif" font-size="108" fill="#f0c04d" stroke="#1f1f1f" stroke-width="1.8">WOODSTOCK</text>
+
+      </svg>
+    </div>
+
     <div class="intro">
-      <div class="section-label">Today's Puzzle</div>
-      <div class="comic-rule" aria-hidden="true"></div>
       <p>Woodstock has had such fun at ACPT, but his little wings are tired from carrying a pencil around all day. He's settled into the Marriott lobby for a game of Scrabble with his cruciverbal friends.</p>
       <p>Woodstock doesn't talk; he chirps. His special tiles show only chirp-marks, but birds use the same Scrabble letter values we do. Bonus squares do not matter here. Use the crossing words and the scoring guide to figure out what word Woodstock played across the center of the board.</p>
       <p>You'll need that answer for 17A of Just One Clue.</p>
     </div>
 
-    <div class="section-label board-label">Scrabble Board</div>
     <div class="board-shell">
       <div class="wrap">
         <div class="board" id="board" aria-label="15 by 15 Scrabble-style board"></div>
@@ -415,12 +454,11 @@
     <section class="score-guide" aria-label="Scrabble Letter Point Values">
       <div class="score-layout">
         <div class="woodstock-box">
-          <img src="996679569b7651b5521ada8fbf21bad1.jpeg" alt="Woodstock chirping while writing" />
-          <p class="caption">Woodstock demonstrates the official chirp alphabet.</p>
+          <img src="Untitled-1.png" alt="Woodstock and Snoopy comic panel" />
+          <p class="woodstock-blurb">Puzzle by Franci Dimitrovska. Check out more of my work at <a href="https://thecluetube.com/">ClueTube</a>, <a href="https://thetriviary.com/">The Triviary</a>, or get in touch at <a href="https://francidimitrovska.com/">francidimitrovska.com</a>! I'm always looking for more puzzle and game design work.</p>
         </div>
 
-        <div>
-          <div class="section-label guide-label">Chirp Values</div>
+        <div class="score-table">
           <h2>Scrabble Letter Point Values</h2>
           <div class="table-wrap">
             <table>
@@ -565,12 +603,12 @@
 
     // Down entries crossing the hidden center answer
     placeDown(8, 5, "EGRET");
-    placeDown(2, 6, "ANAGRAM");
-    placeDown(8, 7, "INK");
+    placeDown(4, 6, "DREAM");
+    placeDown(8, 7, "IRONY");
     placeDown(3, 8, "PEANUT");
-    placeDown(8, 9, "THEME");
-    placeDown(3, 10, "BEAGLE");
-    placeDown(8, 11, "DUCKLING");
+    placeDown(8, 9, "TRUNK");
+    placeDown(3, 10, "CRINGE");
+    placeDown(8, 11, "DETOUR");
 
     for (let r = 0; r < size; r++) {
       for (let c = 0; c < size; c++) {
