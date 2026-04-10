@@ -87,7 +87,7 @@
       padding: 20px 22px;
       margin-bottom: 20px;
       line-height: 1.6;
-      font-size: 1.08rem;
+      font-size: 0.92rem;
       max-width: 75ch;
       background: #f3eccf;
       border-radius: 16px 13px 15px 14px;
@@ -108,6 +108,7 @@
       background: var(--dl);
       border-radius: 12px 16px 13px 15px;
       transform: rotate(0.18deg);
+      overflow-x: hidden;
     }
 
     .score-layout {
@@ -158,6 +159,7 @@
       grid-template-columns: clamp(84px, 16vw, 140px) minmax(0, 1fr);
       align-items: flex-start;
       gap: 10px;
+      min-width: 0;
     }
 
     .woodstock-box img {
@@ -173,12 +175,21 @@
       max-width: 100%;
       font-size: clamp(0.62rem, 1.05vw, 0.88rem);
       line-height: 1.25;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    .woodstock-blurb a {
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .score-table {
       order: 1;
       width: 100%;
       max-width: clamp(320px, 56vw, 440px);
+      min-width: 0;
     }
 
     .caption {
@@ -199,6 +210,7 @@
     table {
       width: 100%;
       min-width: 0;
+      table-layout: fixed;
       border-collapse: collapse;
       font-size: 0.92rem;
       background: #fbf6e2;
@@ -210,6 +222,7 @@
       padding: 7px 10px;
       text-align: left;
       vertical-align: top;
+      overflow-wrap: anywhere;
     }
 
     th {
@@ -222,7 +235,7 @@
     }
 
     td:first-child {
-      width: 110px;
+      width: 28%;
       font-weight: 700;
     }
 
@@ -251,8 +264,8 @@
 
     .board {
       display: grid;
-      grid-template-columns: repeat(15, minmax(0, 1fr));
-      grid-template-rows: repeat(15, minmax(0, 1fr));
+      grid-template-columns: repeat(13, minmax(0, 1fr));
+      grid-template-rows: repeat(13, minmax(0, 1fr));
       width: 100%;
       aspect-ratio: 1 / 1;
       gap: 2px;
@@ -309,13 +322,60 @@
       fill: none;
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: 900px) {
       .page {
         padding: 18px;
       }
 
       .intro {
-        font-size: 1.12rem;
+        font-size: 1rem;
+        max-width: 92ch;
+        margin-bottom: 24px;
+      }
+
+      .score-guide {
+        padding: 22px 24px;
+      }
+
+      .score-layout {
+        gap: 18px;
+      }
+
+      .score-table {
+        max-width: 560px;
+      }
+
+      .table-wrap {
+        max-width: 560px;
+      }
+
+      table {
+        font-size: 1rem;
+      }
+
+      th,
+      td {
+        padding: 8px 11px;
+      }
+
+      .woodstock-box {
+        width: min(560px, 100%);
+        max-width: 560px;
+        grid-template-columns: clamp(100px, 14vw, 150px) minmax(0, 1fr);
+      }
+
+      .woodstock-blurb {
+        font-size: clamp(0.72rem, 0.85vw, 0.96rem);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .page {
+        padding: 20px;
+      }
+
+      .intro {
+        font-size: 1.06rem;
       }
     }
 
@@ -338,7 +398,7 @@
 
       .intro,
       .score-guide {
-        font-size: 0.98rem;
+        font-size: 0.84rem;
         padding: 16px;
       }
 
@@ -357,7 +417,12 @@
 
       th,
       td {
-        padding: 6px 8px;
+        padding: 7px 8px;
+      }
+
+      table {
+        min-width: 0;
+        font-size: 0.88rem;
       }
 
       .board {
@@ -399,6 +464,9 @@
 
       .woodstock-box {
         max-width: 440px;
+        width: 100%;
+        grid-template-columns: clamp(72px, 22vw, 112px) minmax(0, 1fr);
+        gap: 8px;
         align-items: flex-start;
       }
 
@@ -415,12 +483,12 @@
 
       th,
       td {
-        padding: 7px 8px;
+        padding: 6px 7px;
       }
 
       table {
-        min-width: 290px;
-        font-size: 0.84rem;
+        min-width: 0;
+        font-size: 0.82rem;
       }
     }
   </style>
@@ -447,7 +515,7 @@
 
     <div class="board-shell">
       <div class="wrap">
-        <div class="board" id="board" aria-label="15 by 15 Scrabble-style board"></div>
+        <div class="board" id="board" aria-label="13 by 13 Scrabble-style board"></div>
       </div>
     </div>
 
@@ -511,6 +579,8 @@
 
   <script>
     const size = 15;
+    const visibleSize = 13;
+    const trim = 1;
     const board = document.getElementById("board");
 
     const tripleWord = [
@@ -563,6 +633,14 @@
       });
     }
 
+    function placeAcross(row, col, text) {
+      const r = row - 1;
+      const c0 = col - 1;
+      [...text].forEach((ch, i) => {
+        letters.set(`${r},${c0 + i}`, ch);
+      });
+    }
+
     const chirpVariants = {
       1: [
         ["M20 11 Q19 19 21 28"],
@@ -610,9 +688,17 @@
     placeDown(3, 10, "CRINGE");
     placeDown(8, 11, "DETOUR");
 
-    for (let r = 0; r < size; r++) {
-      for (let c = 0; c < size; c++) {
-        const key = `${r},${c}`;
+    // Additional across entries for a more natural in-progress board feel
+    placeAcross(3, 8, "PIC");
+    placeAcross(5, 10, "IQ");
+    placeAcross(11, 7, "NON");
+    placeAcross(13, 10, "OR");
+
+    for (let r = 0; r < visibleSize; r++) {
+      for (let c = 0; c < visibleSize; c++) {
+        const sourceR = r + trim;
+        const sourceC = c + trim;
+        const key = `${sourceR},${sourceC}`;
         const cell = document.createElement("div");
         cell.className = "cell";
 
@@ -624,7 +710,7 @@
           const tile = document.createElement("div");
           tile.className = "tile chirp-tile";
           tile.setAttribute("aria-label", `${chirpCount} chirp${chirpCount > 1 ? "s" : ""}`);
-          tile.innerHTML = chirpMarkup(chirpCount, c);
+          tile.innerHTML = chirpMarkup(chirpCount, sourceC);
           cell.appendChild(tile);
         } else {
           const letter = letters.get(key);
